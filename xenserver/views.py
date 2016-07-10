@@ -664,6 +664,12 @@ def provision(request):
                 if not ip:
                     raise Exception('Oh dear, no more IP addresses')
 
+            if provision['PvtIpaddress']:
+                pvtcidr = provision['PvtIpaddress']
+                pvtsubnet = iputil.getSubnet(pvtcidr)
+
+                pvtip = pvtcidr.split('/')[0]
+                pvtnetmask = iputil.getNetmask(pvtsubnet)
 
             vmobj = XenVM.objects.create(
                 xsref='TEMPREF'+uuid.uuid1().hex,
@@ -674,7 +680,8 @@ def provision(request):
                 xenserver=server,
                 template=template,
                 project=group,
-                ip=ip
+                ip=ip,
+                pvtip=pvtip
             )
             vmobj.save()
 
@@ -687,7 +694,7 @@ def provision(request):
             # Send provisioning to celery
             if not settings.PRETEND_MODE:
                 tasks.create_vm.delay(vmobj, server, template, host, domain,
-                    ip, netmask, gateway, url,)
+                    ip, pvtip, netmask, pvtnetmask, gateway, url,)
 
             log_action(request.user, 3, "Provisioned VM %s on %s" % (
                 hostname,

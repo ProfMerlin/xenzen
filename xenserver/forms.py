@@ -71,6 +71,8 @@ class ProvisionForm(BaseForm):
         queryset=models.Template.objects.all().order_by('memory'))
 
     ipaddress = forms.CharField(required=False, help_text='Leave blank for automatic selection')
+    
+    PvtIpaddress = forms.CharField(required=False, help_text='Leave blank for no Private IP interface')
 
     def clean(self):
         cleaned_data = super(ProvisionForm, self).clean()

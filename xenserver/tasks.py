@@ -171,9 +171,15 @@ def updateVm(xenserver, vmref, vmobj):
             netip = session.xenapi.VM_guest_metrics.get_record(
                         vmobj['guest_metrics']
                     )['networks']['0/ip']
+
+            pvtnetip = session.xenapi.VM_guest_metrics.get_record(
+                        vmobj['guest_metrics']
+                    )['networks']['1/ip']
+ 
             session.xenapi.session.logout()
         except:
             netip = ''
+            pvtnetip = ''
 
         name = vmobj['name_label']
 
@@ -190,6 +196,9 @@ def updateVm(xenserver, vmref, vmobj):
             if netip:
                 vm.ip = netip
 
+            if pvtnetip:
+                vm.pvtip = pvtnetip
+
         except XenVM.DoesNotExist:
             vm = XenVM.objects.create(
                 xsref=vmref,
@@ -199,7 +208,8 @@ def updateVm(xenserver, vmref, vmobj):
                 sockets=int(vmobj['VCPUs_max']),
                 memory=int(vmobj['memory_static_max']) / 1048576,
                 xenserver=xenserver,
-                ip=netip
+                ip=netip,
+                pvtip=pvtnetip
             )
 
         vm.save()
@@ -307,7 +317,7 @@ def complete_vm(vm):
             session.xenapi.VBD.eject(vbd)
 
 @task(time_limit=120)
-def create_vm(vm, xenserver, template, name, domain, ip, subnet, gateway, preseed_url):
+def create_vm(vm, xenserver, template, name, domain, ip, pvtip, subnet, pvtsubnet, gateway, preseed_url):
     session = getSession(xenserver.hostname, xenserver.username,
         xenserver.password)
 
@@ -361,7 +371,9 @@ def create_vm(vm, xenserver, template, name, domain, ip, subnet, gateway, presee
 
     boot_params = template.bootopts % {
         'ip': ip, 
-        'subnet': subnet, 
+        'pvtip': pvtip,
+        'subnet': subnet,
+        'subnet': pvtsubnet, 
         'gateway': gateway, 
         'name': name, 
         'domain': domain, 
@@ -433,9 +445,21 @@ def create_vm(vm, xenserver, template, name, domain, ip, subnet, gateway, presee
             'qos_algorithm_params': {},
             'other_config': {}
         }
+   
+    vpif = { 'device': '1',
+            'network': network,
+            'VM': VM_ref,
+            'MAC': '',
+            'MTU': '1500',
+            'qos_algorithm_type': '',
+            'qos_algorithm_params': {},
+            'other_config': {}
+        }
+
 
     # Create and attach network interface
     session.xenapi.VIF.create(vif)
+    session.xenapi.VIF.create(vpif)
 
     vdisk = {
         'name_label': vmname + ' 0',

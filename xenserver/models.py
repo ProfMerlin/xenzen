@@ -84,7 +84,7 @@ class XenVM(models.Model):
     memory = models.IntegerField()
 
     ip = models.CharField(max_length=128, blank=True)
-
+    pvtip = models.CharField(max_length=128, blank=True)
     xenserver = models.ForeignKey(XenServer, null=True)
 
     project = models.ForeignKey(Project, null=True)

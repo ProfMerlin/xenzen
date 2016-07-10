@@ -1,5 +1,5 @@
 body {
-    background: #111111;
+    background: #ffffff;
     color: #6DBDFF;
     padding-top: 50px;
 }
@@ -28,7 +28,7 @@ dl {
     padding: 20px;
     overflow-x: hidden;
     overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
-    background: #222222;
+    background: #ffffff;
     border-right: 1px solid #222222;
 }
 
@@ -69,13 +69,13 @@ label {
 }
 
 .form-control {
-    background: #222222;
+    background: #ffffff;
     border-color: #555555;
     color: #64AEEC;
 }
 
 input {
-    background: #222222;
+    background: #d9edf7;
     border-color: #555555;
     color: #64AEEC;
 }
@@ -96,7 +96,7 @@ input {
 }
 
 .panel {
-    background: #333;
+    background: #ffffff;
 }
 
 .panel-default {
@@ -106,7 +106,7 @@ input {
 .panel-default>.panel-heading {
     color: #fff;
     border-color: #222;
-    background: #333;
+    background: #ffffff;
 }
 
 .panel-group .panel-heading+.panel-collapse .panel-body {
@@ -158,7 +158,7 @@ tr.warning a{
 .table>thead>tr>th.info, .table>tbody>tr>th.info, .table>tfoot>tr>th.info,
 .table>thead>tr.info>td, .table>tbody>tr.info>td, .table>tfoot>tr.info>td,
 .table>thead>tr.info>th, .table>tbody>tr.info>th, .table>tfoot>tr.info>th {
-    background-color: #20374B;
+    background-color: #d9edf7;
     color: #64AEEC;
 }
 
@@ -202,7 +202,7 @@ table.table {
 }
 
 .btn-default {
-    background: #333;
+    background: #d9edf7;
     border: 1px solid #64AEEC;
 }
 

@@ -24,12 +24,13 @@
     <div id="collapse00" class="panel-collapse collapse in">
       <div class="panel-body">
         <table class="table table-hover table-bordered table-condensed" id="vmlistdefault">
-            <thead><tr><th>VM</th><th>IP</th><th>Memory</th><th>Status</th><th>Placement</th><th></th></tr></thead>
+            <thead><tr><th>VM</th><th>IP</th><th>Private IP</th><th>Memory</th><th>Status</th><th>Placement</th><th></th></tr></thead>
             <tbody>
                 {% for vm in vms %}
                 <tr  {% if vm.status == 'Running' %}class="info"{%else%}class="warning"{%endif%}>
                     <td ><a href="{% url 'vm_view' id=vm.id %}">{{ vm.name }}</a></td>
                     <td>{{ vm.ip }}</td>
+                    <td>{{ vm.pvtip }}</td>
                     <td>{{ vm.memory }} MB</td>
                     <td>{{ vm.status }}</td>
                     <td>{{ vm.xenserver.hostname }}</td>
@@ -87,12 +88,13 @@
         </a>
         {% endif %}
         <table class="table table-hover table-bordered table-condensed" id="vmlist{{project.id}}">
-            <thead><tr><th>VM</th><th>IP</th><th>Memory</th><th>Status</th><th>Placement</th><th></th></tr></thead>
+            <thead><tr><th>VM</th><th>IP</th><th>Private IP</th><th>Memory</th><th>Status</th><th>Placement</th><th></th></tr></thead>
             <tbody>
                 {% for vm in project.xenvm_set.all %}
                 <tr  {% if vm.status == 'Running' %}class="info"{%else%}class="warning"{%endif%}>
                     <td ><a href="{% url 'vm_view' id=vm.id %}">{{ vm.name }}</a></td>
                     <td>{{ vm.ip }}</td>
+                    <td>{{ vm.pvtip }}</td>
                     <td>{{ vm.memory }} MB</td>
                     <td>{{ vm.status }}</td>
                     <td>{{ vm.xenserver.hostname }}</td>
