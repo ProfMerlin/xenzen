@@ -437,7 +437,7 @@ def create_vm(vm, xenserver, template, name, domain, ip, pvtip, subnet, pvtsubne
     vm.save()
 
     vif = { 'device': '0',
-            'network': network,
+            'network': 'Pool-wide network associated with eth0',
             'VM': VM_ref,
             'MAC': '',
             'MTU': '1500',
@@ -447,7 +447,7 @@ def create_vm(vm, xenserver, template, name, domain, ip, pvtip, subnet, pvtsubne
         }
    
     vpif = { 'device': '1',
-            'network': network,
+            'network': 'Pool-wide network associated with eth1',
             'VM': VM_ref,
             'MAC': '',
             'MTU': '1500',
